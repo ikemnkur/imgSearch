@@ -14,7 +14,7 @@ function Gallery() {
             return;
         }
        
-        fetch('http://localhost:5000/images')
+        fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/images')
             .then((response) => response.json())
             .then((data) => setImages(data));
         // localStorage.setItem('imagesLength', images.length);
