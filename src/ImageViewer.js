@@ -11,7 +11,7 @@ function ImageViewer() {
   const imgRef = useRef(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/images?id=${id}`)
+    fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images?id=${id}`)
       .then(response => response.json())
       .then(data => {
         if (data.length > 0) {
