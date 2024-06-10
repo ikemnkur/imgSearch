@@ -28,7 +28,7 @@ function SearchPage() {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Enter tags..."
                   />
-                  <button style={{ marginLeft: 5 }} type="submit">Search</button>
+                  <button style={{ marginLeft: 0 }} type="submit">Search</button>
               </form>
             </div>
             {/* Space for advertisements */}
@@ -42,7 +42,7 @@ function SearchPage() {
               </strong>
             </div>
             
-                <button onClick={handleUpload}>Upload</button>
+                <button style={{ width: 150, background: "green" }}  onClick={handleUpload}>Upload</button>
               
         </div>
     </div>

@@ -7,11 +7,17 @@ function Gallery() {
 
     const [images, setImages] = useState([]);
 
-    useEffect(() => {
-        if (images.length > 0) return;
+    useEffect(() => { 
+        
+        if (images.length > 0) {
+            localStorage.setItem('imagesLength', images.length);
+            return;
+        }
+       
         fetch('http://localhost:5000/images')
             .then((response) => response.json())
             .then((data) => setImages(data));
+        // localStorage.setItem('imagesLength', images.length);
     }, []);
 
     let [searchParams] = useSearchParams();
@@ -37,12 +43,13 @@ function Gallery() {
                     />
                 ))}
             </div>)}
-            {filteredImages.length === 0 && <div style={{ height: 400, margin: "auto", width: 600, display: "flex", background: "#FFEEEE" }}> <h2 style={{ margin: "auto" }}>No images found</h2> </div>}
+            {filteredImages.length === 0 && <div style={{ height: 400, margin: "auto", maxwidth: 600, display: "flex", background: "#FFEEEE" }}> <h2 style={{ margin: "auto" }}>No images found</h2> </div>}
             <div style={{ margin: 20 }}>
                 <div>
                     <h4>Search for New Image?</h4>
-                    <button style={{ marginRight: 50, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * 10)}`)}> Random</button>
-                    <button onClick={() => window.history.back()}>Back</button>
+                    <button style={{ marginRight:20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength')+1)}`)}> Random</button>
+                    <button style={{  width: 100,  }} onClick={() => window.history.back()}>Back</button>
+                    <button style={{ marginLeft:20, width: 100, background: '#FF3333', }} onClick={() => navigate(`/`)}>Main</button>
                 </div>
             </div>
             {/* Space for advertisements */}
