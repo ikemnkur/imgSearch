@@ -18,7 +18,7 @@ function Gallery() {
             .then((response) => response.json())
             .then((data) => setImages(data));
         // localStorage.setItem('imagesLength', images.length);
-    }, []);
+    });
 
     let [searchParams] = useSearchParams();
     const navigate = useNavigate();
