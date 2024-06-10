@@ -42,7 +42,7 @@ const UploadImage = () => {
       };
 
       // Optionally, POST the image data to your JSON server
-      await fetch('http://localhost:5000/images', {
+      await fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/images', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ const UploadImage = () => {
       setLoading(false);
 
       // Navigate to the gallery page with the search query
-      fetch('http://localhost:5000/images?name=' + imageData.name)
+      fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/images?name=' + imageData.name)
             .then((response) => response.json())
             .then((data) => navigate(`/image/${data.id}`));
       
