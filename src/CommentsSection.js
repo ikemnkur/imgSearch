@@ -7,7 +7,7 @@ const CommentsSection = ({ id }) => {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/comments?imageId=${id}`)
+    fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/comments?imageId=${id}`)
       .then((response) => response.json())
       .then((data) => setComments(data));
   }, [id]);
@@ -23,7 +23,7 @@ const CommentsSection = ({ id }) => {
       };
 
       // POST the new comment to the JSON server
-      const response = await fetch('http://localhost:5000/comments', {
+      const response = await fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/comments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
