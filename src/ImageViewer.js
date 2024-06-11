@@ -8,6 +8,7 @@ function ImageViewer() {
   const canvasRef = useRef(null);
   const [imageData, setImageData] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const [views, setViews] = useState(0);
   const imgRef = useRef(null);
 
   useEffect(() => {
@@ -22,6 +23,20 @@ function ImageViewer() {
       });
   }, [id]);
 
+  useEffect(() => { //Update views count by 1
+    if (imageData) {
+        fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}`, {
+            method: 'PATCH',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ views: imageData.views + 1 }),
+        })
+            .then((response) => response.json())
+            .then((data) => setViews(data.views));
+    }
+  }, [id, imageData]); 
+
   useEffect(() => {
     if (imageData) {
       const canvas = canvasRef.current;
@@ -31,29 +46,37 @@ function ImageViewer() {
       img.src = imageData.url;
       imgRef.current = img;
 
-      img.onload = () => {
-        const aspectRatio = img.width / img.height;
-        canvas.width = aspectRatio > 1 ? 512 : 512 * aspectRatio;
-        canvas.height = aspectRatio > 1 ? 512 / aspectRatio : 512;
-        drawImage();
-        setLoaded(true);
-      };
-
       const canvasPos = { x: 0, y: 0, scale: 1 };
       let mouseDown = false;
       const startPos = { x: 0, y: 0 };
       let lastTouchDist = null;
+
+      img.onload = () => {
+        canvas.width = 512;
+        canvas.height = 512;
+        const aspectRatio = img.width / img.height;
+        if (aspectRatio > 1) {
+          img.width = 512;
+          img.height = 512 / aspectRatio;
+        } else {
+          img.width = 512 * aspectRatio;
+          img.height = 512;
+        }
+        canvasPos.x = (canvas.width - img.width) / 2;
+        canvasPos.y = (canvas.height - img.height) / 2;
+        drawImage();
+        setLoaded(true);
+      };
 
       const drawImage = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.save();
-        ctx.translate(canvasPos.x, canvasPos.y);
+        ctx.translate(canvas.width / 2, canvas.height / 2);
         ctx.scale(canvasPos.scale, canvasPos.scale);
-        const dx = (canvas.width - img.width) / 2;
-        const dy = (canvas.height - img.height) / 2;
-        ctx.drawImage(img, dx, dy, img.width, img.height);
+        ctx.translate(-canvas.width / 2, -canvas.height / 2);
+        ctx.drawImage(img, canvasPos.x, canvasPos.y, img.width, img.height);
         ctx.restore();
       };
 
@@ -80,6 +103,10 @@ function ImageViewer() {
         const zoom = e.deltaY * -0.002;
         const newScale = canvasPos.scale + zoom;
         if (newScale > 0.1 && newScale < 10) {
+          const mouseX = e.clientX - canvas.offsetLeft;
+          const mouseY = e.clientY - canvas.offsetTop;
+          canvasPos.x -= (mouseX - canvas.width / 2) * zoom;
+          canvasPos.y -= (mouseY - canvas.height / 2) * zoom;
           canvasPos.scale = newScale;
           drawImage();
         }
@@ -172,8 +199,10 @@ function ImageViewer() {
             <canvas
               style={{ border: '3px solid', borderRadius: 10, borderColor: 'black' }}
               ref={canvasRef}
+              width={512}
+              height={512}
             ></canvas>
-            <p>Uploaded By: {imageData.nickname}</p>
+            <p>Uploaded by: {imageData.nickname} ----  {views} Views</p>
             <div>
               Tags: {imageData.tags && imageData.tags.map((tag, index) => (
                 <React.Fragment key={index}>
