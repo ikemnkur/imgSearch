@@ -233,7 +233,7 @@ function ImageViewer() {
             </div>
             <div>
               <h4>Search for New Image?</h4>
-              <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * 10)}`)}> Random</button>
+              <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength')+1)}`)}> Random </button>
               <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
               <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Main</button>
             </div>
