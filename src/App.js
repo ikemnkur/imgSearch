@@ -7,7 +7,7 @@ import UploadImage from './UploadImage';
 import './UploadImage.css';
 import TagManager from 'react-gtm-module'
 const tagManagerArgs = {
-  gtmId: 'GTM-WDTLBTVL'
+  gtmId: 'G-92GX2GE84L '
 }
 TagManager.initialize(tagManagerArgs)
 
