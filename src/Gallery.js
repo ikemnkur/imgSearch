@@ -38,7 +38,7 @@ function Gallery() {
                         key={image.id}
                         src={image.url}
                         alt={image.name}
-                        style={{ width: '300px', filter: 'blur(1px)', margin: 'auto', padding: 5, cursor: 'pointer' }}
+                        style={{ width: "80%", filter: 'blur(1px)', margin: 'auto', padding: 5, cursor: 'pointer' }}
                         onClick={() => navigate(`/image/${image.id}`, { state: { image } })}
                     />
                 ))}
