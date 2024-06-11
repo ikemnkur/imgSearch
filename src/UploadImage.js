@@ -24,7 +24,7 @@ const UploadImage = () => {
     const ctx = canvas.getContext('2d');
 
     img.onload = () => {
-      const scaleFactor = 1 / 8;
+      const scaleFactor = 1 / 4;
       canvas.width = img.width * scaleFactor;
       canvas.height = img.height * scaleFactor;
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);

@@ -5,6 +5,11 @@ import ImageViewer from './ImageViewer';
 import SearchPage from './SearchPage';
 import UploadImage from './UploadImage';
 import './UploadImage.css';
+import TagManager from 'react-gtm-module'
+const tagManagerArgs = {
+  gtmId: 'GTM-WDTLBTVL'
+}
+TagManager.initialize(tagManagerArgs)
 
 function App() {
   return (
