@@ -246,7 +246,7 @@ function ImageViewer() {
               style={{ border: '3px solid', borderRadius: 10, borderColor: 'black', backgroundColor: '#FFFFEE', padding: 5 }}
               ref={canvasRef}
             ></canvas>
-            <p>By: {imageData.nickname} --- {views} Views --- 
+            <p>By: {imageData.nickname} --- <text> Views: {views} --- </text>
             <button style={{width: 32, background: "green"}} onClick={handleLike} disabled={hasLikedOrDisliked}>↑</button> {likes} <text> :: </text>
             {dislikes}  <button style={{width: 32, background: "red"}} onClick={handleDislike} disabled={hasLikedOrDisliked}>↓</button></p>
             <div>
