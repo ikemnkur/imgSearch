@@ -13,7 +13,7 @@ function SearchPage() {
         const response = await fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/thumbnails');
         const data = await response.json();
         setThumbnails(data);
-        setRandomThumbnails(generateRandomThumbnails(data));
+        setRandomThumbnails(generateRandomThumbnails(thumbnails));
       } catch (error) {
         console.error('Error fetching thumbnails:', error);
       }
