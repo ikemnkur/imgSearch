@@ -246,7 +246,9 @@ function ImageViewer() {
               style={{ border: '3px solid', borderRadius: 10, borderColor: 'black', backgroundColor: '#FFFFEE', padding: 5 }}
               ref={canvasRef}
             ></canvas>
-            <p>Uploaded by: {imageData.nickname} --- {views} Views --- {likes} <button onClick={handleLike} disabled={hasLikedOrDisliked}>Like</button> :: {dislikes} <button onClick={handleDislike} disabled={hasLikedOrDisliked}>Dislike</button></p>
+            <p>By: {imageData.nickname} --- {views} Views ---
+            <button style={{width: 50, background: "green"}} onClick={handleLike} disabled={hasLikedOrDisliked}>Like</button> {likes}  :: 
+            {dislikes} <button style={{width: 50, background: "green"}} onClick={handleDislike} disabled={hasLikedOrDisliked}>Dislike</button></p>
             <div>
               Tags: {imageData.tags && imageData.tags.map((tag, index) => (
                 <React.Fragment key={index}>
