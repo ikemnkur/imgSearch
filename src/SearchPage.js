@@ -22,7 +22,7 @@ function SearchPage() {
 
   const getRandomThumbnails = () => {
     const shuffled = [...thumbnails].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 4);
+    return shuffled.slice(0, 6);
   };
 
   const handleSearch = (e) => {
@@ -61,20 +61,24 @@ function SearchPage() {
 
         <button style={{ width: 150, background: "green" }} onClick={handleUpload}>Upload</button>
         <h1>Random Pics</h1>
-        <div>
-          <table style={{ width: "90%", background: "#FFDDEE", margin: "auto" }}>
-            <tbody>
+        <p>Click to Reveal</p>
+        <div style={{ width: "90%", background: "#FFDDEE", margin: "auto", gap: "10px", borderRadius: 5}}>
+          {/* <table style={{ width: "90%", background: "#FFDDEE", margin: "auto" }}>
+            <tbody> */}
               {getRandomThumbnails().map((thumbnail, index) => (
-                <tr key={index}>
-                  <td colSpan={2}>
-                    <img src={thumbnail.url} alt={thumbnail.name} style={{ width: '100%', height: 'auto' }} />
-                  </td>
-                </tr>
+                // <tr key={index}>
+                  // <td colSpan={2}>
+                    <img src={thumbnail.url} alt={thumbnail.name} style={{ filter: 'blur(10px)', maxWidth: '100px', maxHieght: '100px', margin: "auto", padding: 5, borderRadius: 5}} 
+                      onClick={() => navigate(`/image/${thumbnail.id}`)}
+                    />
+                //   </td>
+                // </tr> 
               ))}
-            </tbody>
-          </table>
+            {/* </tbody>
+          </table> */}
         </div>
-        <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
+        <button style={{ width: 100, marginTop: 15, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
+        
       </div>
     </div>
   );

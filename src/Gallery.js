@@ -32,13 +32,13 @@ function Gallery() {
             <h3>Search Term: "{searchTerm}"</h3>
             {/* <div style={{ display: "grid", gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '10px', border: 3, width: 512, margin: "auto", justifyContent: 'center' }}> */}
 
-            {filteredImages.length !== 0 && (<div style={{ height: 700, overflowY: "scroll", display: "grid", gap: '10px', border: 3, width: 512, margin: "auto", justifyContent: 'center' }}>
+            {filteredImages.length !== 0 && (<div style={{ height: 512, overflowY: "scroll", display: "grid", gap: '10px', border: 3,  margin: "auto", justifyContent: 'center', }}>
                 {filteredImages.map(image => (
                     <img
                         key={image.id}
                         src={image.url}
                         alt={image.name}
-                        style={{ width: "80%", filter: 'blur(1px)', margin: 'auto', padding: 5, cursor: 'pointer' }}
+                        style={{ width: "150px", filter: 'blur(5px)', margin: 'auto', padding: 5, cursor: 'pointer' }}
                         onClick={() => navigate(`/image/${image.id}`, { state: { image } })}
                     />
                 ))}

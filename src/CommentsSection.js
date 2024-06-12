@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { formatDistanceToNow } from 'date-fns';
 import './CommentsSection.css';
 
 const CommentsSection = ({ id }) => {
@@ -19,7 +20,7 @@ const CommentsSection = ({ id }) => {
         imageId: id,
         nickname,
         comment,
-        timestamp: new Date().toUTCString(),
+        timestamp: new Date().toISOString(),
       };
 
       // POST the new comment to the JSON server
@@ -59,7 +60,7 @@ const CommentsSection = ({ id }) => {
       <div className="comments-list">
         {comments.map((c, index) => (
           <div key={index} className="comment">
-            <p><strong>{c.nickname}</strong> ({c.timestamp}):</p>
+            <p><strong>{c.nickname}</strong> ({formatDistanceToNow(new Date(c.timestamp), { addSuffix: true })}):</p>
             <p>{c.comment}</p>
           </div>
         ))}

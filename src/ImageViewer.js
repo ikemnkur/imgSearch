@@ -23,21 +23,41 @@ function ImageViewer() {
       });
   }, [id]);
 
-  useEffect(() => { //Update views count by 1
+  useEffect(() => {
+    // Update views count by 1
     if (imageData) {
-        fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}`, {
-            method: 'PATCH',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ views: imageData.views + 1 }),
-        })
-            .then((response) => response.json())
-            .then((data) => setViews(data.views));
+      fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ views: imageData.views + 1 }),
+      })
+        .then(response => response.json())
+        .then(data => setViews(data.views));
     }
-  }, [id, imageData]); 
+  }, [id, imageData]);
 
   useEffect(() => {
+    const updateCanvasSize = () => {
+      const canvas = canvasRef.current;
+      const size = Math.min(window.innerWidth, window.innerHeight) - 20; // Subtract some margin/padding
+      canvas.width = size;
+      canvas.height = size;
+    };
+
+    const drawImage = (canvas, ctx, img, canvasPos) => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.scale(canvasPos.scale, canvasPos.scale);
+      ctx.translate(-canvas.width / 2, -canvas.height / 2);
+      ctx.drawImage(img, canvasPos.x, canvasPos.y, img.width, img.height);
+      ctx.restore();
+    };
+
     if (imageData) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
@@ -52,32 +72,19 @@ function ImageViewer() {
       let lastTouchDist = null;
 
       img.onload = () => {
-        canvas.width = 512;
-        canvas.height = 512;
+        updateCanvasSize();
         const aspectRatio = img.width / img.height;
         if (aspectRatio > 1) {
-          img.width = 512;
-          img.height = 512 / aspectRatio;
+          img.width = canvas.width;
+          img.height = canvas.width / aspectRatio;
         } else {
-          img.width = 512 * aspectRatio;
-          img.height = 512;
+          img.width = canvas.width * aspectRatio;
+          img.height = canvas.width;
         }
         canvasPos.x = (canvas.width - img.width) / 2;
         canvasPos.y = (canvas.height - img.height) / 2;
-        drawImage();
+        drawImage(canvas, ctx, img, canvasPos);
         setLoaded(true);
-      };
-
-      const drawImage = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.scale(canvasPos.scale, canvasPos.scale);
-        ctx.translate(-canvas.width / 2, -canvas.height / 2);
-        ctx.drawImage(img, canvasPos.x, canvasPos.y, img.width, img.height);
-        ctx.restore();
       };
 
       const handleMouseDown = (e) => {
@@ -94,7 +101,7 @@ function ImageViewer() {
         if (mouseDown) {
           canvasPos.x = e.clientX - startPos.x;
           canvasPos.y = e.clientY - startPos.y;
-          drawImage();
+          drawImage(canvas, ctx, img, canvasPos);
         }
       };
 
@@ -108,7 +115,7 @@ function ImageViewer() {
           canvasPos.x -= (mouseX - canvas.width / 2) * zoom;
           canvasPos.y -= (mouseY - canvas.height / 2) * zoom;
           canvasPos.scale = newScale;
-          drawImage();
+          drawImage(canvas, ctx, img, canvasPos);
         }
       };
 
@@ -128,14 +135,14 @@ function ImageViewer() {
         if (e.touches.length === 1 && mouseDown) {
           canvasPos.x = e.touches[0].clientX - startPos.x;
           canvasPos.y = e.touches[0].clientY - startPos.y;
-          drawImage();
+          drawImage(canvas, ctx, img, canvasPos);
         } else if (e.touches.length === 2) {
           const touchDist = getTouchDist(e);
           const zoom = (touchDist - lastTouchDist) * 0.005;
           const newScale = canvasPos.scale + zoom;
           if (newScale > 0.1 && newScale < 10) {
             canvasPos.scale = newScale;
-            drawImage();
+            drawImage(canvas, ctx, img, canvasPos);
           }
           lastTouchDist = touchDist;
         }
@@ -153,6 +160,7 @@ function ImageViewer() {
         return Math.sqrt(dx * dx + dy * dy);
       };
 
+      window.addEventListener('resize', updateCanvasSize);
       canvas.addEventListener('mousedown', handleMouseDown);
       window.addEventListener('mouseup', handleMouseUp);
       canvas.addEventListener('mousemove', handleMouseMove);
@@ -163,6 +171,7 @@ function ImageViewer() {
       canvas.addEventListener('touchend', handleTouchEnd);
 
       return () => {
+        window.removeEventListener('resize', updateCanvasSize);
         canvas.removeEventListener('mousedown', handleMouseDown);
         window.removeEventListener('mouseup', handleMouseUp);
         canvas.removeEventListener('mousemove', handleMouseMove);
@@ -197,16 +206,14 @@ function ImageViewer() {
         {imageData ? (
           <>
             <canvas
-              style={{ border: '3px solid', borderRadius: 10, borderColor: 'black' }}
+              style={{ border: '3px solid', borderRadius: 10, borderColor: 'black', backgroundColor: '#FFFFEE', margin: 5 }}
               ref={canvasRef}
-              width={512}
-              height={512}
             ></canvas>
-            <p>Uploaded by: {imageData.nickname} ----  {views} Views</p>
+            <p>Uploaded by: {imageData.nickname} ---- {views} Views</p>
             <div>
               Tags: {imageData.tags && imageData.tags.map((tag, index) => (
                 <React.Fragment key={index}>
-                  <a href={`/gallery?search=${tag}`}>{tag}</a>, 
+                  <a href={`/gallery?search=${tag}`}>{tag}</a><text>; </text>  
                 </React.Fragment>
               ))}
             </div>
@@ -229,11 +236,11 @@ function ImageViewer() {
         ) : (
           <>
             <div style={{ height: 400, margin: "auto", maxWidth: 600, display: "flex", background: "#FFEEEE" }}>
-              <p style={{ margin: "auto" }}>No image data available / Image Deleted</p>
+              <p style={{ margin: "auto" }}>No image data available</p>
             </div>
             <div>
               <h4>Search for New Image?</h4>
-              <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength')+1)}`)}> Random </button>
+              <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * 10)}`)}> Random</button>
               <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
               <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Main</button>
             </div>
