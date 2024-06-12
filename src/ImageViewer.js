@@ -247,7 +247,7 @@ function ImageViewer() {
               ref={canvasRef}
             ></canvas>
             <p>By: {imageData.nickname} --- {views} Views ---
-            <button style={{width: 32, background: "green"}} onClick={handleLike} disabled={hasLikedOrDisliked}>↑</button> {likes}  :: 
+            <button style={{width: 32, background: "green"}} onClick={handleLike} disabled={hasLikedOrDisliked}>↑</button> {likes} <text> :: </text>
             {dislikes}  <button style={{width: 32, background: "red"}} onClick={handleDislike} disabled={hasLikedOrDisliked}>↓</button></p>
             <div>
               Tags: {imageData.tags && imageData.tags.map((tag, index) => (
