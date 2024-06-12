@@ -206,7 +206,7 @@ function ImageViewer() {
         {imageData ? (
           <>
             <canvas
-              style={{ border: '3px solid', borderRadius: 10, borderColor: 'black', backgroundColor: '#FFFFEE', margin: 5 }}
+              style={{ border: '3px solid', borderRadius: 10, borderColor: 'black', backgroundColor: '#FFFFEE', padding: 5 }}
               ref={canvasRef}
             ></canvas>
             <p>Uploaded by: {imageData.nickname} ---- {views} Views</p>
