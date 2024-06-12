@@ -9,6 +9,9 @@ function ImageViewer() {
   const [imageData, setImageData] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [views, setViews] = useState(0);
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [hasLikedOrDisliked, setHasLikedOrDisliked] = useState(false);
   const imgRef = useRef(null);
 
   useEffect(() => {
@@ -17,6 +20,8 @@ function ImageViewer() {
       .then(data => {
         if (data.length > 0) {
           setImageData(data[0]);
+          setLikes(data[0].likes || 0);
+          setDislikes(data[0].dislikes || 0);
         } else {
           setImageData(null);
         }
@@ -196,6 +201,38 @@ function ImageViewer() {
     document.body.removeChild(link);
   };
 
+  const handleLike = async () => {
+    if (!hasLikedOrDisliked) {
+      const newLikes = likes + 1;
+      setLikes(newLikes);
+      setHasLikedOrDisliked(true);
+
+      await fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ likes: newLikes }),
+      });
+    }
+  };
+
+  const handleDislike = async () => {
+    if (!hasLikedOrDisliked) {
+      const newDislikes = dislikes + 1;
+      setDislikes(newDislikes);
+      setHasLikedOrDisliked(true);
+
+      await fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ dislikes: newDislikes }),
+      });
+    }
+  };
+
   return (
     <div>
       <div style={{ textAlign: 'center', margin: 'auto' }}>
@@ -209,7 +246,7 @@ function ImageViewer() {
               style={{ border: '3px solid', borderRadius: 10, borderColor: 'black', backgroundColor: '#FFFFEE', padding: 5 }}
               ref={canvasRef}
             ></canvas>
-            <p>Uploaded by: {imageData.nickname} ---- {views} Views</p>
+            <p>Uploaded by: {imageData.nickname} --- {views} Views --- {likes} <button onClick={handleLike} disabled={hasLikedOrDisliked}>Like</button> :: {dislikes} <button onClick={handleDislike} disabled={hasLikedOrDisliked}>Dislike</button></p>
             <div>
               Tags: {imageData.tags && imageData.tags.map((tag, index) => (
                 <React.Fragment key={index}>
