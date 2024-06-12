@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 function SearchPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [thumbnails, setThumbnails] = useState([]);
+  const [randomThumbnails, setRandomThumbnails] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -12,6 +13,7 @@ function SearchPage() {
         const response = await fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/thumbnails');
         const data = await response.json();
         setThumbnails(data);
+        setRandomThumbnails(generateRandomThumbnails(data));
       } catch (error) {
         console.error('Error fetching thumbnails:', error);
       }
@@ -20,7 +22,7 @@ function SearchPage() {
     fetchThumbnails();
   }, []);
 
-  const getRandomThumbnails = () => {
+  const generateRandomThumbnails = (thumbnails) => {
     const shuffled = [...thumbnails].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 6);
   };
@@ -63,22 +65,17 @@ function SearchPage() {
         <h1>Random Pics</h1>
         <p>Click to Reveal</p>
         <div style={{ width: "90%", background: "#FFDDEE", margin: "auto", gap: "10px", borderRadius: 5}}>
-          {/* <table style={{ width: "90%", background: "#FFDDEE", margin: "auto" }}>
-            <tbody> */}
-              {getRandomThumbnails().map((thumbnail, index) => (
-                // <tr key={index}>
-                  // <td colSpan={2}>
-                    <img src={thumbnail.url} alt={thumbnail.name} style={{ filter: 'blur(10px)', maxWidth: '100px', maxHieght: '100px', margin: "auto", padding: 5, borderRadius: 5}} 
-                      onClick={() => navigate(`/image/${thumbnail.id}`)}
-                    />
-                //   </td>
-                // </tr> 
-              ))}
-            {/* </tbody>
-          </table> */}
+          {randomThumbnails.map((thumbnail, index) => (
+            <img
+              key={index}
+              src={thumbnail.url}
+              alt={thumbnail.name}
+              style={{ filter: 'blur(10px)', maxWidth: '100px', maxHeight: '100px', margin: "auto", padding: 5, borderRadius: 5}}
+              onClick={() => navigate(`/image/${thumbnail.id}`)}
+            />
+          ))}
         </div>
         <button style={{ width: 100, marginTop: 15, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
-        
       </div>
     </div>
   );
