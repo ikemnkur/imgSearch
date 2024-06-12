@@ -20,7 +20,7 @@ function SearchPage() {
     };
 
     fetchThumbnails();
-  }, []);
+  }, [thumbnails]);
 
   const generateRandomThumbnails = (thumbnails) => {
     const shuffled = [...thumbnails].sort(() => 0.5 - Math.random());
