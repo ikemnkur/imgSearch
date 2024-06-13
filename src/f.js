@@ -145,7 +145,7 @@ function ImageViewer() {
                 Random
               </button>
               <button style={{ marginRight:50, background: 'blue' }} onClick={() => window.history.back()}>Back</button>
-              <button style={{ marginRight:50,}} onClick={() => navigate(`/`)}>Main</button>
+              <button style={{ marginRight:50,}} onClick={() => navigate(`/`)}>Search</button>
             </div>
           </>
         )}
