@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 const ImagesList = () => {
   const [images, setImages] = useState([]);
+  const db_url = process.env.JSON_DB_API_BASE_URL || "https://json-server-db-d8c4c14f5f95.herokuapp.com";
 
   useEffect(() => {
-    fetch('http://localhost:5000/images')
+    fetch(`${db_url}/images`)
       .then((response) => response.json())
       .then((data) => setImages(data));
   }, []);

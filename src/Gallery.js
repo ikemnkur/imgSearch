@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import ImagesList from './ImagesList';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-
+const db_url = process.env.JSON_DB_API_BASE_URL || "https://json-server-db-d8c4c14f5f95.herokuapp.com";
 
 function Gallery() {
 
@@ -14,7 +14,7 @@ function Gallery() {
             return;
         }
        
-        fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/thumbnails')
+        fetch(`${db_url}/thumbnails`)
             .then((response) => response.json())
             .then((data) => setImages(data));
         // localStorage.setItem('imagesLength', images.length);

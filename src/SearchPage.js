@@ -6,11 +6,12 @@ function SearchPage() {
   const [thumbnails, setThumbnails] = useState([]);
   const [randomThumbnails, setRandomThumbnails] = useState([]);
   const navigate = useNavigate();
+  const db_url = process.env.JSON_DB_API_BASE_URL || "https://json-server-db-d8c4c14f5f95.herokuapp.com";
 
   useEffect(() => {
     const fetchThumbnails = async () => {
       try {
-        const response = await fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/thumbnails');
+        const response = await fetch(`${db_url}/thumbnails`);
         const data = await response.json();
         setThumbnails(data);
         setRandomThumbnails(generateRandomThumbnails(data));

@@ -1,43 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { formatDistanceToNow } from 'date-fns';
 import './CommentsSection.css';
 
-const CommentsSection = ({ id }) => {
+const CommentsSection = ({id}) => {
+
+
+  const db_url = process.env.JSON_DB_API_BASE_URL || "https://json-server-db-d8c4c14f5f95.herokuapp.com";
   const [nickname, setNickname] = useState('');
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
+  console.log("comments", comments);
+
+//   const [comments, setImages] = useState([]);
 
   useEffect(() => {
-    fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/comments?imageId=${id}`)
+    fetch(`${db_url}/comments?imageId='+id`)
       .then((response) => response.json())
       .then((data) => setComments(data));
-  }, [id]);
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (nickname && comment) {
       const newComment = {
-        imageId: id,
         nickname,
         comment,
-        timestamp: new Date().toISOString(),
+        timestamp: new Date().toUTCString(),
       };
-
-      // POST the new comment to the JSON server
-      const response = await fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/comments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newComment),
-      });
-
-      if (response.ok) {
-        const savedComment = await response.json();
-        setComments([...comments, savedComment]);
-        setNickname('');
-        setComment('');
-      }
+      setComments([...comments, newComment]);
+      setNickname('');
+      setComment('');
     }
   };
 
@@ -60,7 +51,7 @@ const CommentsSection = ({ id }) => {
       <div className="comments-list">
         {comments.map((c, index) => (
           <div key={index} className="comment">
-            <p><strong>{c.nickname}</strong> ({formatDistanceToNow(new Date(c.timestamp), { addSuffix: true })}):</p>
+            <p><strong>{c.nickname}</strong> ({c.timestamp}):</p>
             <p>{c.comment}</p>
           </div>
         ))}

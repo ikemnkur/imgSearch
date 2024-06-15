@@ -13,9 +13,10 @@ function ImageViewer() {
   const [dislikes, setDislikes] = useState(0);
   const [hasLikedOrDisliked, setHasLikedOrDisliked] = useState(false);
   const imgRef = useRef(null);
+  const db_url = process.env.JSON_DB_API_BASE_URL || "https://json-server-db-d8c4c14f5f95.herokuapp.com";
 
   useEffect(() => {
-    fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images?id=${id}`)
+    fetch(`${db_url}/images?id=${id}`)
       .then(response => response.json())
       .then(data => {
         if (data.length > 0) {
@@ -31,7 +32,7 @@ function ImageViewer() {
   useEffect(() => {
     // Update views count by 1
     if (imageData) {
-      fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}`, {
+      fetch(`${db_url}/images/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -207,7 +208,7 @@ function ImageViewer() {
       setLikes(newLikes);
       setHasLikedOrDisliked(true);
 
-      await fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}`, {
+      await fetch(`${db_url}/images/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -223,7 +224,7 @@ function ImageViewer() {
       setDislikes(newDislikes);
       setHasLikedOrDisliked(true);
 
-      await fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}`, {
+      await fetch(`${db_url}/images/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

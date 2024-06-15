@@ -9,6 +9,7 @@ const UploadImage = () => {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
+  const db_url = process.env.JSON_DB_API_BASE_URL || "https://json-server-db-d8c4c14f5f95.herokuapp.com";
 
   const navigate = useNavigate();
 
@@ -79,7 +80,7 @@ const UploadImage = () => {
         };
 
         // POST the image data to your JSON server
-        await fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/images', {
+        await fetch(`${db_url}/images`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -88,7 +89,7 @@ const UploadImage = () => {
         });
 
         // POST the thumbnail data to your JSON server
-        await fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/thumbnails', {
+        await fetch(`${db_url}/thumbnails`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -105,7 +106,7 @@ const UploadImage = () => {
         setLoading(false);
 
         // Navigate to the gallery page with the search query
-        fetch('https://json-server-db-d8c4c14f5f95.herokuapp.com/images?name=' + imageData.name)
+        fetch(`${db_url}/images?name=` + imageData.name)
               .then((response) => response.json())
               .then((data) => navigate(`/image/${data[0].id}`));
       });
