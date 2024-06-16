@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import { formatDistanceToNow } from 'date-fns';
 import './CommentsSection.css';
 
-const CommentsSection = ({id}) => {
-
-
-  const db_url = process.env.JSON_DB_API_BASE_URL || "https://json-server-db-d8c4c14f5f95.herokuapp.com";
+const CommentsSection = ({ id }) => {
   const [nickname, setNickname] = useState('');
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
-  console.log("comments", comments);
+  const db_url = process.env.REACT_APP_JSON_DB_API_BASE_URL;
 
-//   const [comments, setImages] = useState([]);
 
   useEffect(() => {
-    fetch(`${db_url}/comments?imageId='+id`)
+    fetch(`${db_url}/comments?imageId=${id}`)
       .then((response) => response.json())
       .then((data) => setComments(data));
-  }, []);
+  }, [id]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (nickname && comment) {
       const newComment = {
+        imageId: id,
         nickname,
         comment,
-        timestamp: new Date().toUTCString(),
+        timestamp: new Date().toISOString(),
       };
-      setComments([...comments, newComment]);
-      setNickname('');
-      setComment('');
+
+      // POST the new comment to the JSON server
+      const response = await fetch(`${db_url}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newComment),
+      });
+
+      if (response.ok) {
+        const savedComment = await response.json();
+        setComments([...comments, savedComment]);
+        setNickname('');
+        setComment('');
+      }
     }
   };
 
@@ -51,7 +62,7 @@ const CommentsSection = ({id}) => {
       <div className="comments-list">
         {comments.map((c, index) => (
           <div key={index} className="comment">
-            <p><strong>{c.nickname}</strong> ({c.timestamp}):</p>
+            <p><strong>{c.nickname}</strong> ({formatDistanceToNow(new Date(c.timestamp), { addSuffix: true })}):</p>
             <p>{c.comment}</p>
           </div>
         ))}

@@ -9,7 +9,7 @@ const UploadImage = () => {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
-  const db_url = process.env.JSON_DB_API_BASE_URL || "https://json-server-db-d8c4c14f5f95.herokuapp.com";
+  const db_url = process.env.REACT_APP_JSON_DB_API_BASE_URL;
 
   const navigate = useNavigate();
 

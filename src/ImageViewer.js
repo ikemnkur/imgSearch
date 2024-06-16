@@ -13,7 +13,8 @@ function ImageViewer() {
   const [dislikes, setDislikes] = useState(0);
   const [hasLikedOrDisliked, setHasLikedOrDisliked] = useState(false);
   const imgRef = useRef(null);
-  const db_url = process.env.JSON_DB_API_BASE_URL || "https://json-server-db-d8c4c14f5f95.herokuapp.com";
+//   const db_url = "http://localhost:3500"
+  const db_url = process.env.REACT_APP_JSON_DB_API_BASE_URL;
 
   useEffect(() => {
     fetch(`${db_url}/images?id=${id}`)
@@ -31,6 +32,7 @@ function ImageViewer() {
 
   useEffect(() => {
     // Update views count by 1
+    console.log(".env", db_url) 
     if (imageData) {
       fetch(`${db_url}/images/${id}`, {
         method: 'PATCH',
