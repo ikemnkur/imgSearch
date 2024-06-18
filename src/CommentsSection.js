@@ -13,7 +13,7 @@ const CommentsSection = ({ id }) => {
     fetch(`${db_url}/comments?imageId=${id}`)
       .then((response) => response.json())
       .then((data) => setComments(data));
-  }, [id]);
+  }, [id, db_url]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

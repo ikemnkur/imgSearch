@@ -27,7 +27,7 @@ function SearchPage() {
     }, 10000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [db_url, thumbnails]);
 
   const generateRandomThumbnails = (thumbnails) => {
     const shuffled = [...thumbnails].sort(() => 0.5 - Math.random());

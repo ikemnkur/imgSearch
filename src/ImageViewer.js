@@ -28,7 +28,7 @@ function ImageViewer() {
           setImageData(null);
         }
       });
-  }, [id]);
+  }, [id, db_url]);
 
   useEffect(() => {
     // Update views count by 1
@@ -44,7 +44,7 @@ function ImageViewer() {
         .then(response => response.json())
         .then(data => setViews(data.views));
     }
-  }, [id, imageData]);
+  }, [id, imageData, db_url]);
 
   useEffect(() => {
     const updateCanvasSize = () => {
