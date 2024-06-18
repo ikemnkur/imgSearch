@@ -22,12 +22,17 @@ function SearchPage() {
 
     fetchThumbnails();
 
+
+  }, [db_url, thumbnails]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setRandomThumbnails(generateRandomThumbnails(thumbnails));
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [db_url, thumbnails]);
+  }, [thumbnails]);
+
 
   const generateRandomThumbnails = (thumbnails) => {
     const shuffled = [...thumbnails].sort(() => 0.5 - Math.random());
@@ -71,13 +76,13 @@ function SearchPage() {
         <button style={{ width: 150, background: "green" }} onClick={handleUpload}>Upload</button>
         <h1>Random Pics</h1>
         <p>Click to Reveal</p>
-        <div style={{ width: "90%", background: "#FFDDEE", margin: "auto", gap: "10px", borderRadius: 5}}>
+        <div style={{ width: "90%", background: "#FFDDEE", margin: "auto", gap: "10px", borderRadius: 5 }}>
           {randomThumbnails.map((thumbnail, index) => (
             <img
               key={index}
               src={thumbnail.url}
               alt={thumbnail.name}
-              style={{ filter: 'blur(10px)', maxWidth: '100px', maxHeight: '100px', margin: "auto", padding: 5, borderRadius: 5}}
+              style={{ filter: 'blur(10px)', maxWidth: '100px', maxHeight: '100px', margin: "auto", padding: 5, borderRadius: 5 }}
               onClick={() => navigate(`/image/${thumbnail.id}`)}
             />
           ))}
