@@ -23,7 +23,7 @@ function SearchPage() {
     fetchThumbnails();
 
 
-  }, [db_url, thumbnails]);
+  }, [db_url]);
 
   useEffect(() => {
     const interval = setInterval(() => {
