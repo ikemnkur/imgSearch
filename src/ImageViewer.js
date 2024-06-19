@@ -13,8 +13,8 @@ function ImageViewer() {
   const [dislikes, setDislikes] = useState(0);
   const [hasLikedOrDisliked, setHasLikedOrDisliked] = useState(false);
   const imgRef = useRef(null);
-//   const db_url = "http://localhost:3500"
-  const db_url = process.env.REACT_APP_JSON_DB_API_BASE_URL;
+  const db_url = "https://json-server-db-d8c4c14f5f95.herokuapp.com"
+  // const db_url = process.env.REACT_APP_JSON_DB_API_BASE_URL;
 
   useEffect(() => {
     fetch(`${db_url}/images?id=${id}`)
