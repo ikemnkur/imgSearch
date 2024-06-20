@@ -289,7 +289,7 @@ function ImageViewer() {
             <div style={{ margin: 20, padding: 50 }}>
               Advertisement Space
 
-              <iframe title="Sponsor Video" width="50%" height="375" src="https://www.youtube.com/embed/_vhf0RZg0fg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe title="Sponsor Video" width="90%" src="https://www.youtube.com/embed/_vhf0RZg0fg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               
               <div dangerouslySetInnerHTML={{ __html: `
                 <!-- JuicyAds v3.0 -->
@@ -322,8 +322,7 @@ function ImageViewer() {
             <div>
               <h4>Search for New Image?</h4>
               <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * 10)}`)}> Random</button>
-              <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
-              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Main</button>
+              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Search</button>
             </div>
           </>
         )}
@@ -335,8 +334,7 @@ function ImageViewer() {
             <span className="close" onClick={handleCloseModal}>&times;</span>
             <h2>Download will begin in {countdown} seconds</h2>
             <iframe
-              width="480"
-              height="270"
+              width="95%"
               src="https://www.youtube.com/embed/ov0_ehE5t2A" 
               frameBorder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
