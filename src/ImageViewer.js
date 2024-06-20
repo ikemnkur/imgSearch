@@ -322,6 +322,7 @@ function ImageViewer() {
             <div>
               <h4>Search for New Image?</h4>
               <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * 10)}`)}> Random</button>
+              <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
               <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Search</button>
             </div>
           </>
@@ -335,7 +336,7 @@ function ImageViewer() {
             <h2>Download will begin in {countdown} seconds</h2>
             <iframe
               width="95%"
-              src="https://www.youtube.com/embed/ov0_ehE5t2A" 
+              src="https://www.youtube.com/embed/ov0_ehE5t2A?autoplay=1&mute=1" 
               frameBorder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -343,8 +344,7 @@ function ImageViewer() {
             ></iframe>
             <div>
               <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
-              <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
-              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Main</button>
+              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Search</button>
             </div>
           </div>
         </div>

@@ -23,7 +23,8 @@ function Gallery() {
     let [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const searchTerm = searchParams.get('search');
-    const filteredImages = images.filter(image => image.tags.includes(searchTerm.toLocaleLowerCase()) || image.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()));
+    // let imagesTagStr = JSON.stringify(image.tags)
+    const filteredImages = images.filter(image => image.tags.includes(searchTerm.toLocaleLowerCase()) || JSON.stringify(image.tags).includes(searchTerm.toLocaleLowerCase())  || image.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()));
 
     return (
 
