@@ -235,6 +235,11 @@ function ImageViewer() {
 
   return (
     <div>
+        <div dangerouslySetInnerHTML={{ __html: `
+               <!-- JuicyAds PopUnders v3 Start -->
+               <script type="text/javascript" src="https://js.juicyads.com/jp.php?c=34e42303u294u4q2x2f423a454&u=http%3A%2F%2Fwww.juicyads.rocks"></script>
+               <!-- JuicyAds PopUnders v3 End -->
+              ` }}></div>
       <div style={{ textAlign: 'center', margin: 'auto' }}>
         <div>
           <h1>Image Viewer:</h1>

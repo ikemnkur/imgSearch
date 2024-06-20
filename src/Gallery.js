@@ -28,6 +28,11 @@ function Gallery() {
     return (
 
         <div style={{ textAlign: 'center' }}>
+            <div dangerouslySetInnerHTML={{ __html: `
+               <!-- JuicyAds PopUnders v3 Start -->
+               <script type="text/javascript" src="https://js.juicyads.com/jp.php?c=34e42303u294u4q2x2f423a454&u=http%3A%2F%2Fwww.juicyads.rocks"></script>
+               <!-- JuicyAds PopUnders v3 End -->
+              ` }}></div>
             <h1>Search Results:</h1>
             <h3>Search Term: "{searchTerm}"</h3>
             {/* <div style={{ display: "grid", gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '10px', border: 3, width: 512, margin: "auto", justifyContent: 'center' }}> */}
