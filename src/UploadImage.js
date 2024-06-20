@@ -163,6 +163,17 @@ const UploadImage = () => {
         <button type="button" onClick={() => window.history.back()}>
           Back
         </button>
+        <div>
+          Sponsor Video
+        <iframe
+              width="95%"
+              src="https://www.youtube.com/embed/ov0_ehE5t2A?autoplay=1&mute=1" 
+              frameBorder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Sponsor Video"
+            ></iframe>
+        </div>
       </form>
     </div>
   );

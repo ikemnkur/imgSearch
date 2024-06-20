@@ -99,7 +99,18 @@ function SearchPage() {
           ))}
         </div>
         <button style={{ width: 100, marginTop: 15, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
-      </div>
+      </div> 
+      <div style={{ margin: 20, padding: 50 }}>
+          Advertisement Space
+          <iframe
+              width="95%"
+              src="https://www.youtube.com/embed/ov0_ehE5t2A?autoplay=1&mute=1" 
+              frameBorder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Sponsor Video"
+            ></iframe>
+        </div>
     </div>
   );
 }

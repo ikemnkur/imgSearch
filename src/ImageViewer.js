@@ -195,7 +195,7 @@ function ImageViewer() {
 
   const handleDownloadClick = () => {
     setShowModal(true);
-    setCountdown(30);
+    setCountdown(45);
     countdownRef.current = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
