@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CommentsSection from './CommentsSection';
 import { useParams, useNavigate } from 'react-router-dom';
+import './Modal.css';
 
 function ImageViewer() {
   const navigate = useNavigate();
@@ -12,7 +13,10 @@ function ImageViewer() {
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [hasLikedOrDisliked, setHasLikedOrDisliked] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [countdown, setCountdown] = useState(30);
   const imgRef = useRef(null);
+  const countdownRef = useRef(null);
 
   useEffect(() => {
     fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images?id=${id}`)
@@ -189,6 +193,27 @@ function ImageViewer() {
     }
   }, [imageData]);
 
+  const handleDownloadClick = () => {
+    setShowModal(true);
+    setCountdown(30);
+    countdownRef.current = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(countdownRef.current);
+          handleDownload();
+          setShowModal(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const handleCloseModal = () => {
+    clearInterval(countdownRef.current);
+    setShowModal(false);
+  };
+
   const handleDownload = async () => {
     const response = await fetch(`${imageData.url}`);
     const blob = await response.blob();
@@ -263,6 +288,9 @@ function ImageViewer() {
             </div>
             <div style={{ margin: 20, padding: 50 }}>
               Advertisement Space
+
+              <iframe width="50%" height="375" src="https://www.youtube.com/embed/_vhf0RZg0fg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              
               <div dangerouslySetInnerHTML={{ __html: `
                 <!-- JuicyAds v3.0 -->
                 <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
@@ -278,7 +306,7 @@ function ImageViewer() {
               <h4>Download HD Image</h4>
               <button
                 style={{ marginRight: 20, width: 100, borderRadius: 5, background: 'purple', padding: '10px', color: 'white', textDecoration: 'none' }}
-                onClick={handleDownload}
+                onClick={handleDownloadClick}
               >
                 Download
               </button>
@@ -293,13 +321,35 @@ function ImageViewer() {
             </div>
             <div>
               <h4>Search for New Image?</h4>
-              <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
+              <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * 10)}`)}> Random</button>
               <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
               <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Main</button>
             </div>
           </>
         )}
       </div>
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={handleCloseModal}>&times;</span>
+            <h2>Download will begin in {countdown} seconds</h2>
+            <iframe
+              width="480"
+              height="270"
+              src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+              frameBorder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <div>
+              <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
+              <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
+              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Main</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
