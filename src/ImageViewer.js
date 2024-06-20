@@ -289,7 +289,7 @@ function ImageViewer() {
             <div style={{ margin: 20, padding: 50 }}>
               Advertisement Space
 
-              <iframe width="50%" height="375" src="https://www.youtube.com/embed/_vhf0RZg0fg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe title="Sponsor Video" width="50%" height="375" src="https://www.youtube.com/embed/_vhf0RZg0fg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               
               <div dangerouslySetInnerHTML={{ __html: `
                 <!-- JuicyAds v3.0 -->
@@ -341,6 +341,7 @@ function ImageViewer() {
               frameBorder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              title="Sponsor Video"
             ></iframe>
             <div>
               <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
