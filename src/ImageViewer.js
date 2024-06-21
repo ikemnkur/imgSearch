@@ -277,11 +277,11 @@ function ImageViewer() {
 
   return (
     <div>
-      <div dangerouslySetInnerHTML={{ __html: `
+      {/* <div dangerouslySetInnerHTML={{ __html: `
              <!-- JuicyAds PopUnders v3 Start -->
              <script type="text/javascript" src="https://js.juicyads.com/jp.php?c=34e42303u294u4q2x2f423a454&u=http%3A%2F%2Fwww.juicyads.rocks"></script>
              <!-- JuicyAds PopUnders v3 End -->
-            ` }}></div>
+            ` }}></div> */}
       <div style={{ textAlign: 'center', margin: 'auto' }}>
         <div>
           <h1>Image Viewer:</h1>
@@ -305,14 +305,14 @@ function ImageViewer() {
             </div>
             <div style={{ margin: 20, padding: 50 }}>
               Advertisement Space
-              
+{/*               
               <div dangerouslySetInnerHTML={{ __html: `
                 <!-- JuicyAds v3.0 -->
                 <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
                 <ins id="1059978" data-width="300" data-height="112"></ins>
                 <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1059978});</script>
                 <!--JuicyAds END-->
-              ` }}></div>
+              ` }}></div> */}
             </div>
             <div className="App">
               <CommentsSection id={id} />
