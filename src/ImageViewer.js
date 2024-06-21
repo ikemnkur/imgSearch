@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CommentsSection from './CommentsSection';
 import { useParams, useNavigate } from 'react-router-dom';
-import './Modal.css';
 
 function ImageViewer() {
   const navigate = useNavigate();
@@ -17,6 +16,7 @@ function ImageViewer() {
   const [countdown, setCountdown] = useState(30);
   const imgRef = useRef(null);
   const countdownRef = useRef(null);
+  const playerRef = useRef(null);
 
   useEffect(() => {
     fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images?id=${id}`)
@@ -195,7 +195,7 @@ function ImageViewer() {
 
   const handleDownloadClick = () => {
     setShowModal(true);
-    setCountdown(45);
+    setCountdown(30);
     countdownRef.current = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
@@ -258,13 +258,30 @@ function ImageViewer() {
     }
   };
 
+  useEffect(() => {
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    window.onYouTubeIframeAPIReady = () => {
+      playerRef.current = new window.YT.Player('youtube-player', {
+        events: {
+          onReady: (event) => {
+            event.target.setVolume(50); // Set the volume to 50%
+          },
+        },
+      });
+    };
+  }, []);
+
   return (
     <div>
-        <div dangerouslySetInnerHTML={{ __html: `
-               <!-- JuicyAds PopUnders v3 Start -->
-               <script type="text/javascript" src="https://js.juicyads.com/jp.php?c=34e42303u294u4q2x2f423a454&u=http%3A%2F%2Fwww.juicyads.rocks"></script>
-               <!-- JuicyAds PopUnders v3 End -->
-              ` }}></div>
+      <div dangerouslySetInnerHTML={{ __html: `
+             <!-- JuicyAds PopUnders v3 Start -->
+             <script type="text/javascript" src="https://js.juicyads.com/jp.php?c=34e42303u294u4q2x2f423a454&u=http%3A%2F%2Fwww.juicyads.rocks"></script>
+             <!-- JuicyAds PopUnders v3 End -->
+            ` }}></div>
       <div style={{ textAlign: 'center', margin: 'auto' }}>
         <div>
           <h1>Image Viewer:</h1>
@@ -288,8 +305,6 @@ function ImageViewer() {
             </div>
             <div style={{ margin: 20, padding: 50 }}>
               Advertisement Space
-
-              <iframe title="Sponsor Video" width="90%" src="https://www.youtube.com/embed/_vhf0RZg0fg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               
               <div dangerouslySetInnerHTML={{ __html: `
                 <!-- JuicyAds v3.0 -->
@@ -311,7 +326,7 @@ function ImageViewer() {
                 Download
               </button>
               <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
-              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Main</button>
+              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Search</button>
             </div>
           </>
         ) : (
@@ -335,15 +350,18 @@ function ImageViewer() {
             <span className="close" onClick={handleCloseModal}>&times;</span>
             <h2>Download will begin in {countdown} seconds</h2>
             <iframe
-              width="95%"
-              src="https://www.youtube.com/embed/ov0_ehE5t2A?autoplay=1&mute=1" 
+              id="youtube-player"
+              width="480"
+              height="270"
+              src="https://www.youtube.com/embed/_vhf0RZg0fg?enablejsapi=1"
               frameBorder="0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allow="autoplay; encrypted-media"
               allowFullScreen
               title="Sponsor Video"
             ></iframe>
             <div>
               <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
+              <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
               <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Search</button>
             </div>
           </div>
