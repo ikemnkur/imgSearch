@@ -17,35 +17,40 @@ function ImageViewer() {
   const imgRef = useRef(null);
   const countdownRef = useRef(null);
   const playerRef = useRef(null);
+  const db_url = process.env.REACT_APP_JSON_DB_API_BASE_URL;
 
   useEffect(() => {
-    fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images?id=${id}`)
+    fetch(`${db_url}/images/${id}`)
       .then(response => response.json())
       .then(data => {
-        if (data.length > 0) {
-          setImageData(data[0]);
-          setLikes(data[0].likes || 0);
-          setDislikes(data[0].dislikes || 0);
+        if (data !== null) {
+          setImageData(data);
+          setViews(data.views || 0);
+          setLikes(data.likes || 0);
+          setDislikes(data.dislikes || 0);
         } else {
           setImageData(null);
         }
       });
-  }, [id]);
+  }, [id, db_url]);
 
   useEffect(() => {
-    // Update views count by 1
     if (imageData) {
-      fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}`, {
+      const newViews = imageData.views + 1;
+      fetch(`${db_url}/images/${id}/views`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ views: imageData.views + 1 }),
+        body: JSON.stringify({ views: newViews }),
       })
         .then(response => response.json())
-        .then(data => setViews(data.views));
+        .then(data => {
+          setViews(newViews);
+        })
+        .catch(error => console.error('Error updating views:', error));
     }
-  }, [id, imageData]);
+  }, [id, imageData, db_url]);
 
   useEffect(() => {
     const updateCanvasSize = () => {
@@ -232,7 +237,7 @@ function ImageViewer() {
       setLikes(newLikes);
       setHasLikedOrDisliked(true);
 
-      await fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}/likes`, {
+      await fetch(`${db_url}/images/${id}/likes`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -248,7 +253,7 @@ function ImageViewer() {
       setDislikes(newDislikes);
       setHasLikedOrDisliked(true);
 
-      await fetch(`https://json-server-db-d8c4c14f5f95.herokuapp.com/images/${id}/dislikes`, {
+      await fetch(`${db_url}/images/${id}/dislikes`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -277,11 +282,6 @@ function ImageViewer() {
 
   return (
     <div>
-      {/* <div dangerouslySetInnerHTML={{ __html: `
-             <!-- JuicyAds PopUnders v3 Start -->
-             <script type="text/javascript" src="https://js.juicyads.com/jp.php?c=34e42303u294u4q2x2f423a454&u=http%3A%2F%2Fwww.juicyads.rocks"></script>
-             <!-- JuicyAds PopUnders v3 End -->
-            ` }}></div> */}
       <div style={{ textAlign: 'center', margin: 'auto' }}>
         <div>
           <h1>Image Viewer:</h1>
@@ -293,26 +293,24 @@ function ImageViewer() {
               style={{ border: '3px solid', borderRadius: 10, borderColor: 'black', backgroundColor: '#FFFFEE', padding: 5 }}
               ref={canvasRef}
             ></canvas>
-            <p>By: {imageData.nickname} --- <text> Views: {views} --- </text>
+            <p>By: {imageData.nickname} <text>--- Views: {views} --- </text>
             <button style={{width: 32, background: "green"}} onClick={handleLike} disabled={hasLikedOrDisliked}>↑</button> {likes} <text> :: </text>
-            {dislikes}  <button style={{width: 32, background: "red"}} onClick={handleDislike} disabled={hasLikedOrDisliked}>↓</button></p>
+            {dislikes} <button style={{width: 32, background: "red"}} onClick={handleDislike} disabled={hasLikedOrDisliked}>↓</button></p>
             <div>
-              Tags: {imageData.tags && imageData.tags.map((tag, index) => (
+              Tags: {imageData.tags && JSON.parse(imageData.tags).map((tag, index) => (
                 <React.Fragment key={index}>
                   <a href={`/gallery?search=${tag}`}>{tag}</a><text>; </text>  
                 </React.Fragment>
               ))}
+
+                {/* Tags: {imageData.tags && imageData.tags.map((tag, index) => (
+                <React.Fragment key={index}>
+                  <a href={`/gallery?search=${tag}`}>{tag}</a><text>; </text>  
+                </React.Fragment>
+              ))} */}
             </div>
             <div style={{ margin: 20, padding: 50 }}>
               Advertisement Space
-{/*               
-              <div dangerouslySetInnerHTML={{ __html: `
-                <!-- JuicyAds v3.0 -->
-                <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-                <ins id="1059978" data-width="300" data-height="112"></ins>
-                <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1059978});</script>
-                <!--JuicyAds END-->
-              ` }}></div> */}
             </div>
             <div className="App">
               <CommentsSection id={id} />
@@ -353,7 +351,7 @@ function ImageViewer() {
               id="youtube-player"
               width="480"
               height="270"
-              src="https://www.youtube.com/embed/_vhf0RZg0fg?enablejsapi=1"
+              src="https://www.youtube.com/embed/_vhf0RZg0fg?enablejsapi=1&autoplay=1&mute=1&controls=0"
               frameBorder="0"
               allow="autoplay; encrypted-media"
               allowFullScreen

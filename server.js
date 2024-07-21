@@ -62,6 +62,55 @@ app.patch('/images/:id/:action', (req, res) => {
   });
 });
 
+// Upload image and thumbnail
+app.post('/upload', (req, res) => {
+  const { name, nickname, tags, url, timestamp, thumbnailUrl } = req.body;
+  const tagsStr = tags.join(',');
+
+  const sqlImage = 'INSERT INTO images (url, name, tags, timestamp, nickname) VALUES (?, ?, ?, ?, ?)';
+  db.query(sqlImage, [url, name, tagsStr, timestamp, nickname], (err, result) => {
+    if (err) throw err;
+    const imageId = result.insertId;
+    
+    const sqlThumbnail = 'INSERT INTO thumbnails (url, name, tags, timestamp, nickname) VALUES (?, ?, ?, ?, ?)';
+    db.query(sqlThumbnail, [thumbnailUrl, name, tagsStr, timestamp, nickname], (err, result) => {
+      if (err) throw err;
+      res.json({ imageId });
+    });
+  });
+});
+
+// Get comments by image ID
+app.get('/comments', (req, res) => {
+  const { imageId } = req.query;
+  const sql = 'SELECT * FROM comments WHERE imageId = ?';
+  db.query(sql, [imageId], (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
+// // Post a new comment
+// app.post('/comments', (req, res) => {
+//   const { imageId, nickname, comment, timestamp } = req.body;
+//   const sql = 'INSERT INTO comments (imageId, nickname, comment, timestamp) VALUES (?, ?, ?, ?)';
+//   db.query(sql, [imageId, nickname, comment, timestamp], (err, result) => {
+//     if (err) throw err;
+//     res.json({ id: result.insertId });
+//   });
+// });
+
+app.post('/comments', (req, res) => {
+  const { imageId, nickname, comment } = req.body;
+  const timestamp = new Date().toISOString(); // Ensure timestamp is in ISO 8601 format
+  const sql = 'INSERT INTO comments (imageId, nickname, comment, timestamp) VALUES (?, ?, ?, ?)';
+  db.query(sql, [imageId, nickname, comment, timestamp], (err, result) => {
+    if (err) throw err;
+    res.json({ id: result.insertId });
+  });
+});
+
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

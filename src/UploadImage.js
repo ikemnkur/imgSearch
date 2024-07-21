@@ -69,18 +69,14 @@ const UploadImage = () => {
         const imageData = {
           name,
           nickname,
-          tags: tags.split(',').map(tag => tag.trim()),
+          tags: tags.split(',').map(tag => tag.trim()), // Make sure tags are split and trimmed
           url: imageUrl,
           timestamp,
+          thumbnailUrl,
         };
 
-        const thumbnailData = {
-          ...imageData,
-          url: thumbnailUrl,
-        };
-
-        // POST the image data to your JSON server
-        await fetch(`${db_url}/images`, {
+        // POST the image data to your server
+        const uploadResponse = await fetch(`${db_url}/upload`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -88,14 +84,7 @@ const UploadImage = () => {
           body: JSON.stringify(imageData),
         });
 
-        // POST the thumbnail data to your JSON server
-        await fetch(`${db_url}/thumbnails`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(thumbnailData),
-        });
+        const result = await uploadResponse.json();
 
         // Reset form fields
         setName('');
@@ -105,10 +94,8 @@ const UploadImage = () => {
         setPreviewUrl(null);
         setLoading(false);
 
-        // Navigate to the gallery page with the search query
-        fetch(`${db_url}/images?name=` + imageData.name)
-              .then((response) => response.json())
-              .then((data) => navigate(`/image/${data[0].id}`));
+        // Navigate to the ImageViewer page with the new image ID
+        navigate(`/image/${result.imageId}`);
       });
     } catch (error) {
       console.error('Error uploading image to Cloudinary:', error);
@@ -118,11 +105,7 @@ const UploadImage = () => {
 
   return (
     <div className="upload-image">
-      {/* <div dangerouslySetInnerHTML={{ __html: `
-               <!-- JuicyAds PopUnders v3 Start -->
-               <script type="text/javascript" src="https://js.juicyads.com/jp.php?c=34e42303u294u4q2x2f423a454&u=http%3A%2F%2Fwww.juicyads.rocks"></script>
-               <!-- JuicyAds PopUnders v3 End -->
-              ` }}></div> */}
+      <strong>Have your own image to share?</strong>
       <h1>Upload an Image:</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -163,16 +146,17 @@ const UploadImage = () => {
         <button type="button" onClick={() => window.history.back()}>
           Back
         </button>
+        <br></br>
         <div>
-          Sponsor Video
-        <iframe
-              width="95%"
-              src="https://www.youtube.com/embed/ov0_ehE5t2A?autoplay=1&mute=1" 
-              frameBorder="0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title="Sponsor Video"
-            ></iframe>
+          <h3>Sponsor Video</h3>
+          <iframe
+            width="95%"
+            src="https://www.youtube.com/embed/ov0_ehE5t2A?autoplay=1&mute=1"
+            frameBorder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="Sponsor Video"
+          ></iframe>
         </div>
       </form>
     </div>

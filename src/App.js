@@ -5,6 +5,7 @@ import ImageViewer from './ImageViewer';
 import SearchPage from './SearchPage';
 import UploadImage from './UploadImage';
 import './UploadImage.css';
+import './Modal.css';
 // import TagManager from 'react-gtm-module'
 // import ReactGA from 'react-ga';
 // ReactGA.initialize('G-92GX2GE84L');

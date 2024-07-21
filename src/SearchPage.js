@@ -69,7 +69,7 @@ function SearchPage() {
         {/* <br></br> */}
         {/* <div style={{ margin: 20, padding: 50 }}>
           Advertisement Space */}
-          {/* <div dangerouslySetInnerHTML={{
+        {/* <div dangerouslySetInnerHTML={{
             __html: `
                 <!-- JuicyAds v3.0 -->
                 <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
@@ -82,7 +82,7 @@ function SearchPage() {
         <br></br>
         <div>
           <strong>Have your own image to share?</strong>
-        </div> 
+        </div>
         <button style={{ width: 150, background: "green" }} onClick={handleUpload}>Upload</button>
         <br></br>
         <h3>Random Pics</h3>
@@ -99,20 +99,24 @@ function SearchPage() {
           ))}
         </div>
         <button style={{ width: 100, marginTop: 15, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
-      </div> 
-      <div style={{ margin: "auto", padding: 50 }}>
-          <strong style={{}}>Advertisement Space </strong>
+       
+        <div style={{ margin: "auto", padding: 50 }}>
+          <strong style={{marginBottom:15}}>Advertisement Space </strong>
           <br></br>
+         <div style={{ margin: "auto", padding: 10 }}>
           <iframe
-              width="95%"
-              height="95%"
-              src="https://www.youtube.com/embed/ov0_ehE5t2A?autoplay=1&mute=1" 
-              frameBorder="0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title="Sponsor Video"
-            ></iframe>
-        </div>
+            width="95%"
+            height="95%"
+            src="https://www.youtube.com/embed/ov0_ehE5t2A?autoplay=1&mute=1"
+            frameBorder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="Sponsor Video"
+          ></iframe>
+         </div>
+          
+        </div></div>
+
     </div>
   );
 }
