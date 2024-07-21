@@ -18,6 +18,8 @@ function ImageViewer() {
   const countdownRef = useRef(null);
   const playerRef = useRef(null);
   const db_url = process.env.REACT_APP_JSON_DB_API_BASE_URL;
+  const [viewUpdated, setViewUpdated] = useState(false); // Add a flag to track view update
+
 
   useEffect(() => {
     fetch(`${db_url}/images/${id}`)
@@ -35,7 +37,8 @@ function ImageViewer() {
   }, [id, db_url]);
 
   useEffect(() => {
-    if (imageData) {
+    // Update views count by 1 if not already updated
+    if (imageData && !viewUpdated) {
       const newViews = imageData.views + 1;
       fetch(`${db_url}/images/${id}/views`, {
         method: 'PATCH',
@@ -44,13 +47,14 @@ function ImageViewer() {
         },
         body: JSON.stringify({ views: newViews }),
       })
-        .then(response => response.json())
-        .then(data => {
-          setViews(newViews);
-        })
-        .catch(error => console.error('Error updating views:', error));
+        .then(response => {
+          if (response.ok) {
+            setViews(newViews);
+            setViewUpdated(true); // Set the flag to true to prevent further updates
+          }
+        });
     }
-  }, [id, imageData, db_url]);
+  }, [id, imageData, viewUpdated, db_url]);
 
   useEffect(() => {
     const updateCanvasSize = () => {
