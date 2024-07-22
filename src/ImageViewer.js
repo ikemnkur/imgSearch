@@ -363,7 +363,7 @@ function ImageViewer() {
             <h2>Download will begin in {countdown} seconds</h2>
             <iframe
               id="youtube-player"
-              width="480"
+              width="90%"
               height="270"
               src="https://www.youtube.com/embed/_vhf0RZg0fg?enablejsapi=1&autoplay=1&mute=1&controls=0"
               frameBorder="0"
