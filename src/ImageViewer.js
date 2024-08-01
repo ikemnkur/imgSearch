@@ -20,7 +20,6 @@ function ImageViewer() {
   const db_url = process.env.REACT_APP_JSON_DB_API_BASE_URL;
   const [viewUpdated, setViewUpdated] = useState(false); // Add a flag to track view update
 
-
   useEffect(() => {
     fetch(`${db_url}/images/${id}`)
       .then(response => response.json())
@@ -48,10 +47,17 @@ function ImageViewer() {
         body: JSON.stringify({ views: newViews }),
       })
         .then(response => {
-          if (response.ok) {
-            setViews(newViews);
-            setViewUpdated(true); // Set the flag to true to prevent further updates
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
           }
+          return response.json();
+        })
+        .then(data => {
+          setViews(newViews);
+          setViewUpdated(true); // Set the flag to true to prevent further updates
+        })
+        .catch(error => {
+          console.error('Error updating views:', error);
         });
     }
   }, [id, imageData, viewUpdated, db_url]);
@@ -224,7 +230,7 @@ function ImageViewer() {
   };
 
   const handleDownload = async () => {
-    const response = await fetch(`${imageData.url}`);
+    const response = await fetch(imageData.url);
     const blob = await response.blob();
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -307,12 +313,7 @@ function ImageViewer() {
                 </React.Fragment>
               ))}
 
-                {/* Tags: {imageData.tags && imageData.tags.map((tag, index) => (
-                <React.Fragment key={index}>
-                  <a href={`/gallery?search=${tag}`}>{tag}</a><text>; </text>  
-                </React.Fragment>
-              ))} */}
-            </div>
+           </div>
             <div style={{ margin: 20, padding: 50 }}>
                 Advertisement Space
                 <div>
@@ -338,7 +339,7 @@ function ImageViewer() {
                 Download
               </button>
               <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
-              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Search</button>
+              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate('/')}>Search</button>
             </div>
           </>
         ) : (
@@ -350,7 +351,7 @@ function ImageViewer() {
               <h4>Search for New Image?</h4>
               <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * 10)}`)}> Random</button>
               <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
-              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Search</button>
+              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate('/')}>Search</button>
             </div>
           </>
         )}
@@ -374,7 +375,7 @@ function ImageViewer() {
             <div>
               <button style={{ marginRight: 20, width: 100, background: "purple" }} onClick={() => navigate(`/image/${Math.floor(Math.random() * localStorage.getItem('imagesLength') + 1)}`)}> Random</button>
               <button style={{ width: 100 }} onClick={() => window.history.back()}>Back</button>
-              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate(`/`)}>Search</button>
+              <button style={{ marginLeft: 20, width: 100, background: '#FF3333' }} onClick={() => navigate('/')}>Search</button>
             </div>
           </div>
         </div>
