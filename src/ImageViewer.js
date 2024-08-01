@@ -35,32 +35,61 @@ function ImageViewer() {
       });
   }, [id, db_url]);
 
+  // useEffect(() => {
+  //   // Update views count by 1 if not already updated
+  //   if (imageData && !viewUpdated) {
+  //     const newViews = imageData.views + 1;
+  //     fetch(`${db_url}/images/${id}/views`, {
+  //       method: 'PATCH',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ views: newViews }),
+  //     })
+  //       .then(response => {
+  //         if (!response.ok) {
+  //           throw new Error(`HTTP error! Status: ${response.status}`);
+  //         }
+  //         return response.json();
+  //       })
+  //       .then(data => {
+  //         setViews(newViews);
+  //         setViewUpdated(true); // Set the flag to true to prevent further updates
+  //       })
+  //       .catch(error => {
+  //         console.error('Error updating views:', error);
+  //       });
+  //   }
+  // }, [id, imageData, viewUpdated, db_url]);
+
   useEffect(() => {
     // Update views count by 1 if not already updated
     if (imageData && !viewUpdated) {
-      const newViews = imageData.views + 1;
+      const newViews = views + 1; // Calculate new view count here
+  
       fetch(`${db_url}/images/${id}/views`, {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ views: newViews }),
+        body: JSON.stringify({ views: newViews }), // Include the new view count in the request
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
           return response.json();
         })
-        .then(data => {
-          setViews(newViews);
-          setViewUpdated(true); // Set the flag to true to prevent further updates
+        .then(() => {
+          setViews(newViews); // Update the view count state
+          setViewUpdated(true); // Prevent further updates
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error updating views:', error);
         });
     }
-  }, [id, imageData, viewUpdated, db_url]);
+  }, [id, imageData, viewUpdated, views, db_url]);
+  
 
   useEffect(() => {
     const updateCanvasSize = () => {
