@@ -20,6 +20,20 @@ function ImageViewer() {
   const db_url = process.env.REACT_APP_JSON_DB_API_BASE_URL;
   const [viewUpdated, setViewUpdated] = useState(false); // Add a flag to track view update
 
+  // Check for nickname in localStorage or prompt the user to enter it
+  useEffect(() => {
+    let nickname = localStorage.getItem('nickname');
+    if (!nickname) {
+      nickname = prompt("Please enter your nickname:");
+      if (nickname) {
+        localStorage.setItem('nickname', nickname);
+      } else {
+        alert("A nickname is required to proceed.");
+        navigate('/'); // Redirect to home or any other appropriate action
+      }
+    }
+  }, [navigate]);
+
   useEffect(() => {
     fetch(`${db_url}/images/${id}`)
       .then(response => response.json())
@@ -34,33 +48,6 @@ function ImageViewer() {
         }
       });
   }, [id, db_url]);
-
-  // useEffect(() => {
-  //   // Update views count by 1 if not already updated
-  //   if (imageData && !viewUpdated) {
-  //     const newViews = imageData.views + 1;
-  //     fetch(`${db_url}/images/${id}/views`, {
-  //       method: 'PATCH',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ views: newViews }),
-  //     })
-  //       .then(response => {
-  //         if (!response.ok) {
-  //           throw new Error(`HTTP error! Status: ${response.status}`);
-  //         }
-  //         return response.json();
-  //       })
-  //       .then(data => {
-  //         setViews(newViews);
-  //         setViewUpdated(true); // Set the flag to true to prevent further updates
-  //       })
-  //       .catch(error => {
-  //         console.error('Error updating views:', error);
-  //       });
-  //   }
-  // }, [id, imageData, viewUpdated, db_url]);
 
   useEffect(() => {
     // Update views count by 1 if not already updated
@@ -89,7 +76,35 @@ function ImageViewer() {
         });
     }
   }, [id, imageData, viewUpdated, views, db_url]);
-  
+
+  useEffect(() => {
+    // Update views count by 1 if not already updated, and include the nickname
+    if (imageData && !viewUpdated) {
+      const newViews = views + 1; // Calculate new view count here
+      const nickname = localStorage.getItem('nickname'); // Get the nickname from local storage
+
+      fetch(`${db_url}/images/${id}/views`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ views: newViews, nickname }), // Include the new view count and nickname in the request
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(() => {
+          setViews(newViews); // Update the view count state
+          setViewUpdated(true); // Prevent further updates
+        })
+        .catch((error) => {
+          console.error('Error updating views:', error);
+        });
+    }
+  }, [id, imageData, viewUpdated, views, db_url]);
 
   useEffect(() => {
     const updateCanvasSize = () => {
