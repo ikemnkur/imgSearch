@@ -49,33 +49,33 @@ function ImageViewer() {
       });
   }, [id, db_url]);
 
-  useEffect(() => {
-    // Update views count by 1 if not already updated
-    if (imageData && !viewUpdated) {
-      const newViews = views + 1; // Calculate new view count here
+  // useEffect(() => {
+  //   // Update views count by 1 if not already updated
+  //   if (imageData && !viewUpdated) {
+  //     const newViews = views + 1; // Calculate new view count here
   
-      fetch(`${db_url}/images/${id}/views`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ views: newViews }), // Include the new view count in the request
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(() => {
-          setViews(newViews); // Update the view count state
-          setViewUpdated(true); // Prevent further updates
-        })
-        .catch((error) => {
-          console.error('Error updating views:', error);
-        });
-    }
-  }, [id, imageData, viewUpdated, views, db_url]);
+  //     fetch(`${db_url}/images/${id}/views`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ views: newViews }), // Include the new view count in the request
+  //     })
+  //       .then((response) => {
+  //         if (!response.ok) {
+  //           throw new Error(`HTTP error! Status: ${response.status}`);
+  //         }
+  //         return response.json();
+  //       })
+  //       .then(() => {
+  //         setViews(newViews); // Update the view count state
+  //         setViewUpdated(true); // Prevent further updates
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error updating views:', error);
+  //       });
+  //   }
+  // }, [id, imageData, viewUpdated, views, db_url]);
 
   useEffect(() => {
     // Update views count by 1 if not already updated, and include the nickname
@@ -88,7 +88,7 @@ function ImageViewer() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ views: newViews, nickname }), // Include the new view count and nickname in the request
+        body: JSON.stringify({ views: newViews, nickname: nickname }), // Include the new view count and nickname in the request
       })
         .then((response) => {
           if (!response.ok) {
