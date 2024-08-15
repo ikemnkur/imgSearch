@@ -20,6 +20,8 @@ function ImageViewer() {
   const db_url = process.env.REACT_APP_JSON_DB_API_BASE_URL;
   const [viewUpdated, setViewUpdated] = useState(false); // Add a flag to track view update
 
+
+
   // Check for nickname in localStorage or prompt the user to enter it
   useEffect(() => {
     let nickname = localStorage.getItem('nickname');
@@ -30,6 +32,260 @@ function ImageViewer() {
       } else {
         alert("A nickname is required to proceed.");
         navigate('/'); // Redirect to home or any other appropriate action
+        setTimeout(() => {
+          nickname = prompt("To prevent bots, please enter a nickname:");
+          if (nickname) {
+            localStorage.setItem('nickname', nickname);
+          } else {
+            let animals = [
+              "Aardvark",
+              "Albatross",
+              "Alligator",
+              "Alpaca",
+              "Ant",
+              "Anteater",
+              "Antelope",
+              "Ape",
+              "Armadillo",
+              "Donkey",
+              "Baboon",
+              "Badger",
+              "Barracuda",
+              "Bat",
+              "Bear",
+              "Beaver",
+              "Bee",
+              "Bison",
+              "Boar",
+              "Buffalo",
+              "Butterfly",
+              "Camel",
+              "Capybara",
+              "Caribou",
+              "Cassowary",
+              "Cat",
+              "Caterpillar",
+              "Cattle",
+              "Chamois",
+              "Cheetah",
+              "Chicken",
+              "Chimpanzee",
+              "Chinchilla",
+              "Chough",
+              "Clam",
+              "Cobra",
+              "Cockroach",
+              "Cod",
+              "Cormorant",
+              "Coyote",
+              "Crab",
+              "Crane",
+              "Crocodile",
+              "Crow",
+              "Curlew",
+              "Deer",
+              "Dinosaur",
+              "Dog",
+              "Dogfish",
+              "Dolphin",
+              "Dotterel",
+              "Dove",
+              "Dragonfly",
+              "Duck",
+              "Dugong",
+              "Dunlin",
+              "Eagle",
+              "Echidna",
+              "Eel",
+              "Eland",
+              "Elephant",
+              "Elk",
+              "Emu",
+              "Falcon",
+              "Ferret",
+              "Finch",
+              "Fish",
+              "Flamingo",
+              "Fly",
+              "Fox",
+              "Frog",
+              "Gaur",
+              "Gazelle",
+              "Gerbil",
+              "Giraffe",
+              "Gnat",
+              "Gnu",
+              "Goat",
+              "Goldfinch",
+              "Goldfish",
+              "Goose",
+              "Gorilla",
+              "Goshawk",
+              "Grasshopper",
+              "Grouse",
+              "Guanaco",
+              "Gull",
+              "Hamster",
+              "Hare",
+              "Hawk",
+              "Hedgehog",
+              "Heron",
+              "Herring",
+              "Hippopotamus",
+              "Hornet",
+              "Horse",
+              "Human",
+              "Hummingbird",
+              "Hyena",
+              "Ibex",
+              "Ibis",
+              "Jackal",
+              "Jaguar",
+              "Jay",
+              "Jellyfish",
+              "Kangaroo",
+              "Kingfisher",
+              "Koala",
+              "Kookabura",
+              "Kouprey",
+              "Kudu",
+              "Lapwing",
+              "Lark",
+              "Lemur",
+              "Leopard",
+              "Lion",
+              "Llama",
+              "Lobster",
+              "Locust",
+              "Loris",
+              "Louse",
+              "Lyrebird",
+              "Magpie",
+              "Mallard",
+              "Manatee",
+              "Mandrill",
+              "Mantis",
+              "Marten",
+              "Meerkat",
+              "Mink",
+              "Mole",
+              "Mongoose",
+              "Monkey",
+              "Moose",
+              "Mosquito",
+              "Mouse",
+              "Mule",
+              "Narwhal",
+              "Newt",
+              "Nightingale",
+              "Octopus",
+              "Okapi",
+              "Opossum",
+              "Oryx",
+              "Ostrich",
+              "Otter",
+              "Owl",
+              "Oyster",
+              "Panther",
+              "Parrot",
+              "Partridge",
+              "Peafowl",
+              "Pelican",
+              "Penguin",
+              "Pheasant",
+              "Pig",
+              "Pigeon",
+              "Pony",
+              "Porcupine",
+              "Porpoise",
+              "Quail",
+              "Quelea",
+              "Quetzal",
+              "Rabbit",
+              "Raccoon",
+              "Rail",
+              "Ram",
+              "Rat",
+              "Raven",
+              "Red deer",
+              "Red panda",
+              "Reindeer",
+              "Rhinoceros",
+              "Rook",
+              "Salamander",
+              "Salmon",
+              "Sand Dollar",
+              "Sandpiper",
+              "Sardine",
+              "Scorpion",
+              "Seahorse",
+              "Seal",
+              "Shark",
+              "Sheep",
+              "Shrew",
+              "Skunk",
+              "Snail",
+              "Snake",
+              "Sparrow",
+              "Spider",
+              "Spoonbill",
+              "Squid",
+              "Squirrel",
+              "Starling",
+              "Stingray",
+              "Stinkbug",
+              "Stork",
+              "Swallow",
+              "Swan",
+              "Tapir",
+              "Tarsier",
+              "Termite",
+              "Tiger",
+              "Toad",
+              "Trout",
+              "Turkey",
+              "Turtle",
+              "Viper",
+              "Vulture",
+              "Wallaby",
+              "Walrus",
+              "Wasp",
+              "Weasel",
+              "Whale",
+              "Wildcat",
+              "Wolf",
+              "Wolverine",
+              "Wombat",
+              "Woodcock",
+              "Woodpecker",
+              "Worm",
+              "Wren",
+              "Yak",
+              "Zebra"
+            ]
+            let colour = [ "red", "blue", "green", "yellow", "purple", "orange", "white", "black", "pink", "cyan", "brown", "biege", "fushia", "silver", "gold" ]
+            // Assuming animals and colour arrays are already defined
+
+            function generateUsername() {
+              // Select a random color
+              const randomColor = colour[Math.floor(Math.random() * colour.length)];
+              
+              // Select a random animal
+              const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+              
+              // Generate a random 4-digit number
+              const randomNumber = Math.floor(Math.random() * 9000) + 1000; // 1000 to 9999
+              
+              // Combine the elements to create the username
+              const username = `${randomColor}${randomAnimal}${randomNumber}`;
+              
+              return username;
+            }
+
+            nickname = generateUsername();
+            console.alert("A nickname has been generated: "+ nickname)
+          }
+        }, 5000)
       }
     }
   }, [navigate]);
@@ -53,7 +309,7 @@ function ImageViewer() {
   //   // Update views count by 1 if not already updated
   //   if (imageData && !viewUpdated) {
   //     const newViews = views + 1; // Calculate new view count here
-  
+
   //     fetch(`${db_url}/images/${id}/views`, {
   //       method: 'POST',
   //       headers: {
@@ -348,28 +604,28 @@ function ImageViewer() {
               ref={canvasRef}
             ></canvas>
             <p>By: {imageData.nickname} <text>--- Views: {views} --- </text>
-            <button style={{width: 32, background: "green"}} onClick={handleLike} disabled={hasLikedOrDisliked}>↑</button> {likes} <text> :: </text>
-            {dislikes} <button style={{width: 32, background: "red"}} onClick={handleDislike} disabled={hasLikedOrDisliked}>↓</button></p>
+              <button style={{ width: 32, background: "green" }} onClick={handleLike} disabled={hasLikedOrDisliked}>↑</button> {likes} <text> :: </text>
+              {dislikes} <button style={{ width: 32, background: "red" }} onClick={handleDislike} disabled={hasLikedOrDisliked}>↓</button></p>
             <div>
               Tags: {imageData.tags && JSON.parse(imageData.tags).map((tag, index) => (
                 <React.Fragment key={index}>
-                  <a href={`/gallery?search=${tag}`}>{tag}</a><text>; </text>  
+                  <a href={`/gallery?search=${tag}`}>{tag}</a><text>; </text>
                 </React.Fragment>
               ))}
 
-           </div>
+            </div>
             <div style={{ margin: 20, padding: 50 }}>
-                Advertisement Space
-                <div>
-                    <iframe
-                        width="95%"
-                        src="https://www.youtube.com/embed/ov0_ehE5t2A?autoplay=1&mute=1"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        title="Sponsor Video"
-                    ></iframe>
-                </div>
+              Advertisement Space
+              <div>
+                <iframe
+                  width="95%"
+                  src="https://www.youtube.com/embed/ov0_ehE5t2A?autoplay=1&mute=1"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title="Sponsor Video"
+                ></iframe>
+              </div>
             </div>
             <div className="App">
               <CommentsSection id={id} />
