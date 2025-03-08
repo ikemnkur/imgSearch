@@ -6,6 +6,7 @@ import SearchPage from './SearchPage';
 import UploadImage from './UploadImage';
 import './UploadImage.css';
 import './Modal.css';
+import UploadMedia from './UploadMedia';
 // import TagManager from 'react-gtm-module'
 // import ReactGA from 'react-ga';
 // ReactGA.initialize('G-92GX2GE84L');
@@ -45,7 +46,7 @@ function App() {
         <Route path="/" element={<SearchPage />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/image/:id" element={<ImageViewer />} />
-        <Route path="/upload" element={<UploadImage />} />
+        <Route path="/upload" element={<UploadMedia />} />
       </Routes>
     </Router>
   );

@@ -53,7 +53,7 @@ function SearchPage() {
     <div>
       <meta name="juicyads-site-verification" content="bbe5a33bc5b03f01ab140107439da909"></meta>
       <div style={{ margin: "auto", textAlign: 'center' }}>
-        <h1>Search for Images</h1>
+        <h1>Search for Images and Videos</h1>
         <div style={{ alignContent: 'center', margin: "auto" }}>
           <form onSubmit={handleSearch}>
             <input

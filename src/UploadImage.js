@@ -104,7 +104,7 @@ const UploadImage = () => {
   };
 
   return (
-    <div className="upload-image">
+    <div className="upload-media">
       <strong>Have your own image to share?</strong>
       <h1>Upload an Image:</h1>
       <form onSubmit={handleSubmit}>

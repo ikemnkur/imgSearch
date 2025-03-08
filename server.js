@@ -9,10 +9,10 @@ app.use(express.json());
 
 // MySQL database connection
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'img_search'
+  host: '34.68.5.170',
+  user: 'remote',
+  password: 'Password!*',
+  database: 'Phind'
 });
 
 db.connect(err => {
